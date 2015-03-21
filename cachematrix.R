@@ -1,7 +1,12 @@
-## Put comments here that give an overall description of what your
-## functions do
+## Code for the Programming Assignment 2: Lexical Scoping of the rpro-012 R Programming course
+## Coursera link: https://class.coursera.org/rprog-012/
 
-## Write a short comment describing this function
+## These R functions cache the results of inverting a matrix, in order to save on potentially
+## costly computations (avoids repeated computations).
+
+## makeCacheMatrix creates a special "matrix" object that caches its inverse
+## and creates a set of functions to set and retrieve its original data
+## and inverted data.
 
 makeCacheMatrix <- function(x = matrix()) {
         i <- NULL
@@ -19,10 +24,12 @@ makeCacheMatrix <- function(x = matrix()) {
 }
 
 
-## Write a short comment describing this function
+## cacheSolve computes the inverse of the "matrix" object from the above function.
+## If the inverse was already calculated previously (and the matrix wasn't changed),
+## the function instead retrieves the inverted data from the cache.
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+        
         i <- x$getinverse()
         if(!is.null(i)) {
                 message("getting cached data")
