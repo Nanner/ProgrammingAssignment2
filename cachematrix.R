@@ -5,18 +5,33 @@
 ## costly computations (avoids repeated computations).
 
 ## makeCacheMatrix creates a special "matrix" object that caches its inverse
-## and creates a set of functions to set and retrieve its original data
-## and inverted data.
+## and creates a list of functions to set and retrieve its original and
+## inverted data.
 
 makeCacheMatrix <- function(x = matrix()) {
+        ## Initialize the cache with a NULL value
         i <- NULL
+        
+        ## The set function "sets" the matrix to one given as a parameter
+        ## The cache is also initialized as NULL. This method is particularly
+        ## useful for cases when we run makeCacheMatrix without parameters.
         set <- function(y) {
                 x <<- y
                 i <<- NULL
         }
+        
+        ## The get function simply returns the matrix data (not inverted)
         get <- function() x
+        
+        ## The setinverse function saves the inverse matrix data passed
+        ## as a parameter in the cache
         setinverse <- function(inverse) i <<- inverse
+        
+        ## The getinverse returns the cached inverse matrix data (or null
+        ## if nothing is cached)
         getinverse <- function() i
+        
+        ## Create a list with the previously created functions, and return it
         list(set = set,
              get = get,
              setinverse = setinverse,
@@ -29,14 +44,18 @@ makeCacheMatrix <- function(x = matrix()) {
 ## the function instead retrieves the inverted data from the cache.
 
 cacheSolve <- function(x, ...) {
-        
+        ## First, try to see if there's already cached inverse matrix data
         i <- x$getinverse()
         if(!is.null(i)) {
+                ## Return the cached data, if it exists
                 message("getting cached data")
                 return(i)
         }
+        
+        ## If no cached data exists, get the matrix data and compute its inverse
         data <- x$get()
         i <- solve(data, ...)
+        ## Save the computed inverse data to the cache and return it
         x$setinverse(i)
         i
 }
